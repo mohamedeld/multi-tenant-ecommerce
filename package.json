@@ -2,14 +2,21 @@
   "name": "multi-tenant-ecommerce",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:types": "PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types"
+
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
+    "@payloadcms/db-mongodb": "^3.33.0",
+    "@payloadcms/next": "^3.33.0",
+    "@payloadcms/payload-cloud": "^3.33.0",
+    "@payloadcms/richtext-lexical": "^3.33.0",
     "@radix-ui/react-checkbox": "^1.2.3",
     "@radix-ui/react-dialog": "^1.1.11",
     "@radix-ui/react-label": "^2.1.4",
@@ -18,8 +25,10 @@
     "@radix-ui/react-slot": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "graphql": "^16.8.1",
     "lucide-react": "^0.503.0",
     "next": "15.3.1",
+    "payload": "^3.33.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.1",
