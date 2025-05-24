@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { getPayload } from "payload"
 import configPromise from "@payload-config";
 import { Category } from "@/payload-types";
+import { CustomCategory } from "./types";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,13 +28,15 @@ export default async function RootLayout({
       parent:{
         exists:false
       }
-    }
+    },
+    sort:'name'
   });
-  const formattedData = data?.docs?.map((doc)=>({
+  const formattedData:CustomCategory[] = data?.docs?.map((doc)=>({
     ...doc,
     subcategories:doc?.subcategories?.docs?.map((item)=>({
-      ...(item as Category)
-    }))
+      ...(item as Category),
+      subcategories:undefined
+    })) || []
   }))
   return (
     <main className="flex flex-col min-h-screen">

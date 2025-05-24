@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils";
 import { useRef, useState } from "react";
 import { useDropdownPosition } from "./use-dropdown-position";
 import SubcategoryMenu from "./SubcategoryMenu";
+import { CustomCategory } from "@/app/(app)/(home)/types";
 
 interface IProps {
-  category: Category;
+  category: CustomCategory;
   isActive?: boolean;
   isNavigationHovered?: boolean;
 }
@@ -41,7 +42,8 @@ const CategoryDropdown = ({
           variant={"elevated"}
           className={cn(
             "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
-            isActive && !isNavigationHovered && "bg-white border-primary"
+            isActive && !isNavigationHovered && "bg-white border-primary",
+            isOpen && 'bg-white border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[4px] hover:-translate-y-[4px] '
           )}
         >
           {category?.name}
@@ -52,7 +54,7 @@ const CategoryDropdown = ({
                 isOpen ? 'opacity-100' : "opacity-0"
             )}/>
         )}
-      </div>
+      </div> 
       <SubcategoryMenu 
         category={category}
         isOpen={isOpen}

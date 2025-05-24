@@ -1,8 +1,9 @@
 import SearchInput from "./SearchInput"
 import CategoriesList from "./CategoriesList"
+import { CustomCategory } from "@/app/(app)/(home)/types"
 
 interface IProps{
-    data:any
+    data:CustomCategory[]
 }
 const SeachFilters = ({data}:IProps) => {
   return (
