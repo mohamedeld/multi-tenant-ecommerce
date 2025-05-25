@@ -2,6 +2,10 @@
 import { useEffect, useRef, useState } from "react"
 import CategoryDropdown from "./CategoryDropdown"
 import { CustomCategory } from "@/app/(app)/(home)/types"
+import { Button } from "../ui/button"
+import { cn } from "@/lib/utils"
+import { ListFilterIcon } from "lucide-react"
+import CategoriesSidebar from "./CategoriesSidebar"
 
 interface IProps{
     data:CustomCategory[]
@@ -39,14 +43,19 @@ const CategoriesList = ({data}:IProps) => {
             setVisibleCount(visible);
         }
         const resizeObserver = new ResizeObserver(calculateVisible);
-        resizeObserver?.observe(containerRef?.current!);
+        resizeObserver.observe(containerRef?.current!);
         return ()=>{
             resizeObserver.disconnect();
         }
     },[data?.length])
   return (
     <div className="w-full relative">
-        <div className="flex items-center gap-3  flex-nowrap">
+        <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} data={data}/>
+    <div ref={measureRef} className="absoulte opacity-0 pointer-events-none flex" style={{
+        position:"fixed",
+        top:-9999,
+        left:-9999
+    }}>
 
         {data?.map((category:CustomCategory)=>{
             return (
@@ -55,6 +64,27 @@ const CategoriesList = ({data}:IProps) => {
                 </div>
             )
         })}
+        </div>
+        <div 
+            ref={containerRef}
+            onMouseEnter={()=> setIsAnyHover(true)}
+            onMouseLeave={()=> setIsAnyHover(false)}
+        className="flex items-center gap-3  flex-nowrap">
+
+        {data?.slice(0,visibleCount)?.map((category:CustomCategory)=>{
+            return (
+                <div key={category?.id}>
+                    <CategoryDropdown category={category} isActive={activeCategory === category?.slug} isNavigationHovered={isAnyHover}/>
+                </div>
+            )
+        })}
+        <div ref={viewAllRef} className="shrink-0">
+            <Button className={cn("h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
+            isActiveCategoryHidden && !isAnyHover && "bg-white border-primary")} onClick={()=>setIsSidebarOpen(true)}>
+                View All 
+                <ListFilterIcon className="ml-2"/>
+            </Button>
+        </div>
         </div>
     </div>
   )
