@@ -1,3 +1,4 @@
+"use client";
 import { CustomCategory } from "@/app/(app)/(home)/types";
 import {
   Sheet,
@@ -11,13 +12,16 @@ import { useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTRPC } from "@/trpc/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 interface IProps{
     open:boolean;
     onOpenChange:React.Dispatch<React.SetStateAction<boolean>>;
-    data:CustomCategory[];
 }
-const CategoriesSidebar = ({open,onOpenChange,data}:IProps) => {
+const CategoriesSidebar = ({open,onOpenChange}:IProps) => {
+    const trpc = useTRPC();
+      const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
     const router = useRouter();
     const [parentCategories,setParentCategories] = useState<CustomCategory[] | null>(null);
     const [selectedCategory,setSelectedCategory] = useState<CustomCategory | null>(null);

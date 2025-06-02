@@ -50,7 +50,7 @@ const CategoriesList = ({data}:IProps) => {
     },[data?.length])
   return (
     <div className="w-full relative">
-        <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} data={data}/>
+        <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen}/>
     <div ref={measureRef} className="absoulte opacity-0 pointer-events-none flex" style={{
         position:"fixed",
         top:-9999,

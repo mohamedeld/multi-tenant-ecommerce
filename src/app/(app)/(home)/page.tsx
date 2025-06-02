@@ -7,7 +7,7 @@ const HomePage =async  () => {
 
   return (
     <div>
-      {JSON.stringify(categories,null,2)}
+      
     </div>
   )
 }

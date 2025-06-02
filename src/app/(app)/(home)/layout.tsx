@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import SeachFilters from "@/components/search-filters/SeachFilters";
+import SeachFilters, { SearchFiltersLoading } from "@/components/search-filters/SeachFilters";
 import type { Metadata } from "next";
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient, trpc } from "@/trpc/server";
@@ -22,7 +22,7 @@ export default async function RootLayout({
         <main className="flex flex-col min-h-screen">
             <Navbar />
             <HydrationBoundary state={dehydrate(queryClient)}>
-                <Suspense fallback={<p>Loading...</p>}>
+                <Suspense fallback={<SearchFiltersLoading/>}>
                     <SeachFilters />
                 </Suspense>
             </HydrationBoundary>
