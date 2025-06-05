@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     categories: Category;
     brands: Brand;
+    products: Product;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -85,6 +86,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     brands: BrandsSelect<false> | BrandsSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -188,6 +190,22 @@ export interface Brand {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  price: number;
+  category?: (string | null) | Category;
+  image?: (string | null) | Media;
+  refundPolicy?: ('30-days' | '14-days' | '7-days' | '3-day' | 'no-refunds') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -208,6 +226,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'brands';
         value: string | Brand;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: string | Product;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -304,6 +326,21 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface BrandsSelect<T extends boolean = true> {
   name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  price?: T;
+  category?: T;
+  image?: T;
+  refundPolicy?: T;
   updatedAt?: T;
   createdAt?: T;
 }
