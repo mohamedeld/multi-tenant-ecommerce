@@ -8,11 +8,28 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 
 const SignUpView = () => {
-    const form = useForm<z.infer<typeof registerSchema>>({
+  const router = useRouter();
+  const trpc = useTRPC();
+  const register = useMutation(trpc.auth.register.mutationOptions({
+    onError:(error)=>{
+      toast.error(error?.message)
+    },
+    onSuccess(data, variables, context) {
+        toast.success("Registered successfully");
+        router.push("/")
+    },
+  }));
+
+  const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
+        mode:"all",
         defaultValues:{
           username:"",
           email:"",
@@ -20,7 +37,7 @@ const SignUpView = () => {
         }
     })
     const onSubmit = (data: z.infer<typeof registerSchema>) => {
-
+      register.mutate(data);
     }
     const username = form.watch("username");
     const usernameErrors = form.formState.errors.username;
@@ -60,11 +77,39 @@ const SignUpView = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              name="email"
+              render={({field})=>(
+                <FormItem>
+                  <FormLabel className="text-base">Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="email" />
+                  </FormControl>
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="password"
+              render={({field})=>(
+                <FormItem>
+                  <FormLabel className="text-base">Password</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="password"/>
+                  </FormControl>
+                 
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
+            <Button disabled={register.isPending} type="submit" size={"lg"} variant={"elevated"}
+            className="bg-black text-white hover:bg-pink-400 hover:text-primary"
+              >{register.isPending ? 'Creating...':'Create Account'}</Button>
+
             </form>
         </Form>
       </div>
       <div className="h-screen w-full lg:col-span-2 hidden lg:block" style={{backgroundImage: "url('/images/shop.jpg')", backgroundSize: "cover", backgroundPosition: "center"}}>
-        Background column
       </div>
     </div>
   )

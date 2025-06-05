@@ -24,6 +24,21 @@ export const authRouter = createTRPCRouter({
             })
         )
         .mutation(async ({ input, ctx }) => {
+            const existingData = await ctx.payload.find({
+                collection:"users",
+                limit:1,
+                where:{
+                    username:{
+                        equals:input.username
+                    }
+                }
+            })
+            if(existingData?.docs[0]){
+                throw new TRPCError({
+                    code:"BAD_REQUEST",
+                    message:"Username already exist"
+                })
+            }
             await ctx.payload.create({
                 collection: "users",
                 data: {
