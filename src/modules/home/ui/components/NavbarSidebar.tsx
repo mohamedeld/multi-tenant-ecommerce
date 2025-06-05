@@ -8,8 +8,8 @@ import {
     SheetTitle,
     SheetTrigger,
   } from "@/components/ui/sheet"
-import { ScrollArea } from "./ui/scroll-area";
 import Link from "next/link";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
   
 interface NavbarItem {
     href:string;

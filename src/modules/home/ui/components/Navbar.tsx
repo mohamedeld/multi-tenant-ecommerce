@@ -1,13 +1,13 @@
 "use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { ReactNode, useState } from "react";
 import { redirect, usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
-import NavbarSidebar from "./NavbarSidebar";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
+import NavbarSidebar from "./NavbarSidebar";
 
 interface NavbarItemProps {
   href: string;

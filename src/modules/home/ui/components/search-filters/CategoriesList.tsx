@@ -2,22 +2,26 @@
 import { useEffect, useRef, useState } from "react"
 import CategoryDropdown from "./CategoryDropdown"
 import { CustomCategory } from "@/app/(app)/(home)/types"
-import { Button } from "../ui/button"
+import { Button } from "../../../../../components/ui/button"
 import { cn } from "@/lib/utils"
 import { ListFilterIcon } from "lucide-react"
 import CategoriesSidebar from "./CategoriesSidebar"
+import { useParams } from "next/navigation"
 
 interface IProps{
     data:CustomCategory[]
 }
 const CategoriesList = ({data}:IProps) => {
+    const params = useParams();
     const containerRef = useRef<HTMLDivElement>(null);
     const measureRef = useRef<HTMLDivElement>(null);
     const viewAllRef = useRef<HTMLDivElement>(null);
     const [visibleCount,setVisibleCount] = useState(data?.length);
     const [isAnyHover,setIsAnyHover] = useState(false);
     const [isSidebarOpen,setIsSidebarOpen] = useState(false);
-    const activeCategory = "all";
+    const categoryParams = params?.category as string | undefined;
+
+    const activeCategory = categoryParams || "all";
     const activeCategoryIndex = data?.findIndex(category=> category?.slug === activeCategory);
     const isActiveCategoryHidden = activeCategoryIndex >= visibleCount && activeCategoryIndex !== -1;
 
@@ -79,7 +83,7 @@ const CategoriesList = ({data}:IProps) => {
             )
         })}
         <div ref={viewAllRef} className="shrink-0">
-            <Button className={cn("h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
+            <Button variant={"elevated"} className={cn("h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
             isActiveCategoryHidden && !isAnyHover && "bg-white border-primary")} onClick={()=>setIsSidebarOpen(true)}>
                 View All 
                 <ListFilterIcon className="ml-2"/>

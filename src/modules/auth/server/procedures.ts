@@ -65,7 +65,10 @@ export const authRouter = createTRPCRouter({
             name:AUTH_COOKIE,
             value:data?.token,
             httpOnly:true,
-            path:"/"
+            path:"/",
+            secure:process.env.NODE_ENV === "production",
+            sameSite:"lax",
+            maxAge:60 * 60 * 24 * 7
         })
         // return data;
         }),
@@ -98,7 +101,10 @@ export const authRouter = createTRPCRouter({
             name:AUTH_COOKIE,
             value:data?.token,
             httpOnly:true,
-            path:"/"
+            path:"/",
+            secure:process.env.NODE_ENV === "production",
+            sameSite:"lax",
+            maxAge:60 * 60 * 24 * 7
         })
         return data;
     })
