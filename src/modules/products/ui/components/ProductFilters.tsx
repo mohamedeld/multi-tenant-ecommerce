@@ -34,12 +34,17 @@ const ProductFilters = () => {
     const onChange = (key:keyof typeof filters,value:unknown)=>{
         setFilters({...filters,[key]:value});
     }
-
+    const onClear = ()=>{
+        setFilters({
+            minPrice:"",
+            maxPrice:""
+        })
+    }
   return (
     <div className="border rounded-md bg-white">
         <div className="p-4 border-b flex items-center justify-between">
             <p className="font-medium">Filters</p>
-            <Button className="underline" type="button" onClick={()=>{}}>Clear</Button>
+            <Button className="underline border-none shadow-none" variant={"ghost"} type="button" onClick={onClear}>Clear</Button>
         </div>
         <ProductFilter title="Price">
            <PriceFilter minPrice={filters?.minPrice} maxPrice={filters?.maxPrice} onMaxPriceChange={(value)=> onChange("maxPrice",value)} onMinPriceChange={(value)=> onChange('minPrice',value)}/>

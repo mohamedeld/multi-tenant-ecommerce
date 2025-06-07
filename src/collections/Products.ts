@@ -30,6 +30,12 @@ export const Products:CollectionConfig = {
       hasMany: false,
     },
     {
+      name:"tags",
+      relationTo:"tags",
+      type:"relationship",
+      hasMany:true
+    },
+    {
       name: "image",
       type: "upload",
       relationTo: "media",
