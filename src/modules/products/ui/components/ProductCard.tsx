@@ -1,4 +1,5 @@
 "use client";
+import { generateTenantURL } from "@/lib/utils";
 import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,7 +24,7 @@ const ProductCard = ({id,name,imageUrl,reviewCount,reviewRating,authorUsername,a
         router.push(`/tenants/${authorUsername}`)
     }
     return (
-    <Link href={`/products/${id}`}>
+    <Link href={`${generateTenantURL(authorUsername)}/products/${id}`}>
         <div className="hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow border rounded-md bg-white overflow-hidden h-full flex flex-col">
             <div className="relative aspect-square">
                 <Image src={imageUrl || "/images/placeholder.png"} alt={name} fill className="object-cover"/>
@@ -34,7 +35,7 @@ const ProductCard = ({id,name,imageUrl,reviewCount,reviewRating,authorUsername,a
                     {authorImageUrl && (
                         <Image src={authorImageUrl} alt={authorUsername} width={16} height={16} className="object-cover rounded-full shrink-0 size-[16px]"/>
                     )}
-                    <p className="text-sm underline font-medium">{authorUsername}</p>
+                    <p onClick={handleUserClick} className="text-sm underline font-medium">{authorUsername}</p>
                 </div>
                 {reviewCount > 0 && (
                     <div className="flex items-center gap-1">
