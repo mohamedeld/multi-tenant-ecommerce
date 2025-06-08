@@ -45,7 +45,7 @@ const TagsFilter = ({tags,onChange}:IProps) => {
             )))
         )}
         {hasNextPage && (
-            <button disabled={isFetchingNextPage} onClick={()=> fetchNextPage()} className="underline font-medium justify-start text-start disabled:opacity-50">Load more</button>
+            <button disabled={isFetchingNextPage} onClick={()=> fetchNextPage()} className="underline font-medium justify-start text-start disabled:opacity-50 cursor-pointer">Load more</button>
         )}
     </div>
   )
