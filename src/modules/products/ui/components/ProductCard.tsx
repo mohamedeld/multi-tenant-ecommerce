@@ -1,6 +1,8 @@
+"use client";
 import { StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface IProps{
     id:string;
@@ -14,7 +16,13 @@ interface IProps{
 }
 
 const ProductCard = ({id,name,imageUrl,reviewCount,reviewRating,authorUsername,authorImageUrl,price}:IProps) => {
-  return (
+    const router = useRouter();
+    const handleUserClick = (e:React.MouseEvent<HTMLDivElement>)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        router.push(`/tenants/${authorUsername}`)
+    }
+    return (
     <Link href={`/products/${id}`}>
         <div className="hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow border rounded-md bg-white overflow-hidden h-full flex flex-col">
             <div className="relative aspect-square">

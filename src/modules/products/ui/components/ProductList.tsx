@@ -7,18 +7,22 @@ import ProductCard, { ProductCardSkeleton } from "./ProductCard";
 import { LIMIT } from "@/modules/tags/constants";
 import { Button } from "@/components/ui/button";
 import { InboxIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface IProps{
     category?:string;
+    tenantSlug?:string
+    narrowView?:boolean;
 }
 
-const ProductList = ({category}:IProps) => {
+const ProductList = ({category,tenantSlug,narrowView}:IProps) => {
     const [filters] = useProductFilters();
     const trcp = useTRPC();
     const {data,isFetchingNextPage,hasNextPage,fetchNextPage} = useSuspenseInfiniteQuery(trcp.products.getMany.infiniteQueryOptions({
         category,
         ...filters,
-        limit:LIMIT
+        limit:LIMIT,
+        tenantSlug
     },{
         getNextPageParam:(lastPage)=>{
             return lastPage?.docs?.length > 0 ? lastPage?.nextPage : undefined
@@ -36,10 +40,13 @@ const ProductList = ({category}:IProps) => {
 
   return (
     <>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+        <div className={cn(
+            "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4",
+            narrowView && "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
+        )}>
         {data?.pages?.flatMap((page)=> page?.docs)?.map((product)=>{
             return (
-                <ProductCard key={product?.id} id={product?.id} imageUrl={product?.image?.url} authorUsername="mohamed" authorImageUrl={undefined} reviewRating={3} reviewCount={5} price={product?.price} name={product?.name} />
+                <ProductCard key={product?.id} id={product?.id} imageUrl={product?.image?.url} authorUsername={product?.tenant?.slug} authorImageUrl={product?.tenant?.image?.url} reviewRating={3} reviewCount={5} price={product?.price} name={product?.name} />
             )
         })}
     </div>
