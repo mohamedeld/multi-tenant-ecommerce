@@ -30,7 +30,7 @@ const CategoryDropdown = ({
   const onMouseLeave = () => {
     setIsOpen(false);
   };
-  const dropdownPosition = getDropdownPosition();
+  // const dropdownPosition = getDropdownPosition();
 
   const toggleDropdown = ()=>{
     if(category?.subcategories?.docs && category?.subcategories?.docs?.length > 0){
@@ -68,7 +68,6 @@ const CategoryDropdown = ({
       <SubcategoryMenu 
         category={category}
         isOpen={isOpen}
-        dropdownPosition={dropdownPosition}  
     />
     </div>
   );

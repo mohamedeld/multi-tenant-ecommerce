@@ -140,6 +140,17 @@ const categories = [
 const seed = async ()=>{
     const payload = await getPayload({config});
 
+    await payload.create({
+      collection:"users",
+      data:{
+        email:"mohamedelsayedelrfaay20010@gmail.com",
+        password:"Mohamed@2025",
+        roles:["super-admin"],
+        username:"admin"
+      }
+    })
+
+
     for(const category of categories){
         const existing = await payload.find({
             collection: "categories",
