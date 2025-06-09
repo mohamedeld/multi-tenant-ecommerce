@@ -1,5 +1,6 @@
 "use client";
 
+import CheckoutBtn from "@/modules/checkout/ui/components/CheckoutBtn";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -22,6 +23,7 @@ const Navbar = ({slug}:IProps) => {
             )}
                 <p className='text-xl'>{data?.name}</p>
             </Link>
+            <CheckoutBtn tenantSlug={slug}/>
         </div>
     </div>
   )
