@@ -11,7 +11,7 @@ interface IProps{
     onMaxPriceChange:(value:string)=>void;
 }
 
-export const formatAsCurrency = (value:string)=>{
+export const formatAsCurrency = (value:string )=>{
     const numericValue = value?.replace(/[^0-9.]/g,"");
     const parts = numericValue?.split(".");
     const formattedValue = parts[0] + (parts?.length > 1 ? "." + parts[1]?.slice(0,2) : "");
