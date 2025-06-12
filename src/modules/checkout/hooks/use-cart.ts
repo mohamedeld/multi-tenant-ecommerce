@@ -11,7 +11,7 @@ export const useCart = (tenantSlug:string)=>{
      const clearCart = useCartStore((state)=> state.clearCart);
 
      const productIds = getCartByTenant(tenantSlug);
-
+   // toggle product to add or remove from cart
      const toggleProduct = useCallback((productId:string)=>{
         if(productIds?.includes(productId)){
             removeProduct(tenantSlug,productId)
