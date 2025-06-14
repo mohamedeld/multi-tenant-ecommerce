@@ -15,7 +15,6 @@ export const tagRouters = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const data = await ctx.payload.find({
         collection: "tags",
-        pagination: false,  
         page: input?.cursor,
         limit:input?.limit
       });
