@@ -5,18 +5,48 @@ import { z } from "zod";
 import { sortValues } from "../hooks/useProductFilters";
 import { LIMIT } from "@/modules/tags/constants";
 
+import {headers as getHeaders} from "next/headers";
+
 export const productRouters = createTRPCRouter({
   getOne:baseProcedure.input(
     z.object({
       id:z.string()
     })
   ).query(async ({ctx,input})=>{
+    const headers = await getHeaders();
+    const session = await ctx.payload.auth({ headers });
+
     const product = await ctx.payload.findByID({
       collection:"products",
       id:input?.id
     });
+    let isPurchase = false;
+    if(session?.user){
+      const orderData = await ctx.payload.find({
+        collection:"orders",
+        pagination:false,
+        limit:1,
+        where:{
+          and:[
+            {
+              product:{
+                equals:input?.id
+              }
+            },
+            {
+              user:{
+                equals:session?.user?.id
+              }
+            }
+          ]
+        }
+      });
+      isPurchase = orderData?.totalDocs > 0;
+    }
+
     return {
       ...product,
+      isPurchase,
       image:product?.image as Media | null,
       cover:product?.cover as Media | null,
       tenant:product?.tenant as Tenant & {image: Media | null}

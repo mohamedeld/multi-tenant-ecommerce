@@ -35,7 +35,7 @@ const SearchInput = ({disabled}:IProps) => {
         </Button>
         {session?.data?.user &&(
             <Button variant={"elevated"} asChild className="">
-                <Link href={"/library"}>
+                <Link prefetch href={"/library"}>
                     <BookmarkCheckIcon className="mr-2"/>
                     Library
                 </Link>
