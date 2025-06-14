@@ -46,7 +46,7 @@ const ProductList = ({category,tenantSlug,narrowView}:IProps) => {
         )}>
         {data?.pages?.flatMap((page)=> page?.docs)?.map((product)=>{
             return (
-                <ProductCard key={product?.id} id={product?.id} imageUrl={product?.image?.url} authorUsername={product?.tenant?.slug} authorImageUrl={product?.tenant?.image?.url} reviewRating={3} reviewCount={5} price={product?.price} name={product?.name} />
+                <ProductCard key={product?.id} id={product?.id} imageUrl={product?.image?.url} authorUsername={product?.tenant?.slug} authorImageUrl={product?.tenant?.image?.url} reviewRating={product?.reviewRating} reviewCount={product?.reviewCount} price={product?.price} name={product?.name} />
             )
         })}
     </div>
