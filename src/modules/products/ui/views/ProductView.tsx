@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 import CartButton from "../components/CartButton";
+import { toast } from "sonner";
 
 interface IProps {
   productId: string;
@@ -102,7 +103,10 @@ const ProductView = ({ productId, tenantSlug }: IProps) => {
                   ):(
                     <CartButton tenantSlug={tenantSlug} productId={productId}/>
                   )}
-                  <Button className="size-12" variant={"elevated"} onClick={()=>{}} disabled={false}>
+                  <Button className="size-12" variant={"elevated"} onClick={()=>{
+                    navigator.clipboard.writeText(window.location.href);
+                    toast.success("URL copied to clipboard")
+                  }} disabled={false}>
                     <LinkIcon/>
                   </Button>
                 </div>
@@ -115,16 +119,16 @@ const ProductView = ({ productId, tenantSlug }: IProps) => {
                   <h3 className="text-xl font-medium">Ratings</h3>
                   <div className="flex items-center gap-x-1 font-medium">
                     <StarIcon className="size-4 fill-black"/>
-                    <p>({5})</p>
-                    <p className="text-base">{5} ratings</p>
+                    <p>({data?.reviewRating})</p>
+                    <p className="text-base">{data?.reviewCount} ratings</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-[auto_1fr_auto] gap-3 mt-4">
                   {[5,4,3,2,1]?.map((star,index)=>(
                     <Fragment key={star}>
                       <div className="font-medium">{star} {star === 1 ? "star":"stars"}</div>
-                      <Progress value={5} className="h-[1lh]"/>
-                      <div className="font-medium">0%</div>
+                      <Progress value={data?.ratingDistribution[star]} className="h-[1lh]"/>
+                      <div className="font-medium">{data?.ratingDistribution[star]}%</div>
                     </Fragment>
                   ))}
                 </div>
