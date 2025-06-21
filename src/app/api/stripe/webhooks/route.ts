@@ -27,6 +27,7 @@ export async function POST(req:Request){
     console.log("Sucess",event?.id);
     const permittedEvents:string[] = [
         "checkout.session.completed",
+        "account.updated"
     ]
     const payload = await getPayload({config});
     if(permittedEvents?.includes(event?.type)){
@@ -48,6 +49,8 @@ export async function POST(req:Request){
                     }
                     const expandedSEssion = await stripe.checkout.sessions.retrieve(data?.id,{
                         expand:["line_items.data.price.product"]
+                    },{
+                        stripeAccount:event.account
                     });
                     if(!expandedSEssion?.line_items?.data || !expandedSEssion?.line_items?.data?.length){
                         throw new Error("No line items found");
@@ -57,13 +60,28 @@ export async function POST(req:Request){
                         await payload.create({
                             collection:"orders",
                             data:{
-                                stripeCheckoutSessionOd:data?.id,
+                                stripeCheckoutSessionId:data?.id,
                                 user:user?.id,
+                                stripeAccountId:event?.account,
                                 product:item?.price?.product?.metadata?.id,
                                 name:item?.price?.product?.name
                             }
                         })
                     }
+                    break;
+                case "account.updated":
+                    data = event.data.object as Stripe.Account;
+                    await payload.update({
+                        collection:"tenants",
+                        where:{
+                            stripeAccountId:{
+                                equals:data?.id
+                            }
+                        },
+                        data:{
+                            stripeDetailsSubmitted:data?.details_submitted
+                        }
+                    })
                     break;
                 default:
                     throw new Error(`Unhandled event: ${event?.type}`)

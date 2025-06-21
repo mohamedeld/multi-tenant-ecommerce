@@ -20,13 +20,15 @@ import { Reviews } from './collections/Reviews'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
 export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components:{
+      beforeNavLinks:['../src/components/StripeVerify#StripeVerify']
+    }
   },
   collections: [Users, Media, Categories, Brands,Products,Tags,Tenants,Orders,Reviews],
   editor: lexicalEditor(),
